@@ -39,16 +39,16 @@ ap.add_argument("-s", "--skip-frames", type=int, default=30,
 args = vars(ap.parse_args())
 '''
 ap = argparse.ArgumentParser()
-ap.add_argument("-o", "--output", type=str, default='out.mp4',
+ap.add_argument("-o", "--output", type=str, default='out/dnc.mp4',
 	help="path to optional output video file")
 args = vars(ap.parse_args())
 
 
-model_caffe='/home/nms/people-counting/mobilenet_ssd/MobileNetSSD_deploy.caffemodel'
-model_proto='/home/nms/people-counting/mobilenet_ssd/MobileNetSSD_deploy.prototxt'
+model_caffe='mobilenet_ssd/MobileNetSSD_deploy.caffemodel'
+model_proto='mobilenet_ssd/MobileNetSSD_deploy.prototxt'
 #input='/home/ncair/Downloads/people-counting-opencv/videos/example_01.mp4'
 #input="rtsp://admin:transit@123@10.185.151.208/"
-input='/home/nms/people-counting/videos/example_01.mp4'
+input='../data/dnc.mp4'
 confidence=0.5
 skip_frames=10
 
