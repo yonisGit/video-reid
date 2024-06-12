@@ -54,7 +54,7 @@ input = '../data/bskt.mp4'
 # input = '../data/dnc.mp4'
 # input = '../data/bolt.mp4'
 REID_MODE = True
-CONFIDENCE = 0.3
+CONFIDENCE = 0.35
 NMS_THRESHOLD = 0.3
 skip_frames = 10
 labels = ("person", "bicycle", "car", "motorbike", "aeroplane",
@@ -236,15 +236,17 @@ while True:
                         x, y = boxes[i][0], boxes[i][1]
                         w, h = boxes[i][2], boxes[i][3]
 
-                        # if confidences[i] > CONFIDENCE:
-                        #     if labels[int(classids[i])] != "person":
-                        #         continue
+                        if confidences[i] > CONFIDENCE:
+                            if labels[int(classids[i])] != "person":
+                                continue
                         if REID_MODE:
                             cropped_image = frame[y:h, x:w]
                             # cv2.imwrite(f'gallery/dets/sample1_{x}_{y}_{totalFrames}.jpg', cropped_image)
-                            cv2.imwrite(f'gallery/dets/sample1_{totalFrames}_{count}_{labels[int(classids[i])]}.jpg',
+                            # cv2.imwrite(f'gallery/dets/sample1_{totalFrames}_{count}_{labels[int(classids[i])]}.jpg',
+                            #             cropped_image)
+                            cv2.imwrite(f'gallery/dets/sample1_{count}_{totalFrames}.jpg',
                                         cropped_image)
-                            cv2.rectangle(frame, (x, y), (w, h), (0, 255, 0), 2)
+                            # cv2.rectangle(frame, (x, y), (w, h), (0, 255, 0), 2)
                         else:
                             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
