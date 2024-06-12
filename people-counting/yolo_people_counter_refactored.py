@@ -50,8 +50,8 @@ input = "rtsp://admin:transit@123@10.185.151.213/"
 input = "/home/nms/people-counting/videos/hghh.3gp"
 input = '../data/bskt.mp4'
 input = '../data/dnc.mp4'
-input = '../data/bolt.mp4'
-
+# input = '../data/bolt.mp4'
+REID_MODE = True
 CONFIDENCE = 0.5
 NMS_THRESHOLD = 0.3
 skip_frames = 3
@@ -204,9 +204,12 @@ while True:
                         x, y = boxes[i][0], boxes[i][1]
                         w, h = boxes[i][2], boxes[i][3]
 
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        cropped_image = frame[y:y + h, x:x + w]
-                        cv2.imwrite(f'gallery/dets/{totalFrames}p{x + y}.jpg', cropped_image)
+                        if REID_MODE:
+                            cropped_image = frame[y:y + h, x:x + w]
+                            cv2.imwrite(f'gallery/dets/sample1_{x + y}_{totalFrames}.jpg', cropped_image)
+                        else:
+                            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
                         # construct a dlib rectangle object from the bounding
                         # box coordinates and then start the dlib correlation
                         # tracker
