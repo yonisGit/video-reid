@@ -11,6 +11,7 @@ import torchreid
 
 from torchreid.data import ImageDataset
 
+
 #    Create own dataset
 
 class NewDataset(ImageDataset):
@@ -44,7 +45,7 @@ class NewDataset(ImageDataset):
         q_dir = osp.join(self.dataset_dir, q_dir)
         g_dir = osp.join(self.dataset_dir, g_dir)
 
-        train = [['temp.jpg',0,0]]
+        train = [['temp.jpg', 0, 0]]
         query = []
         q_files = os.listdir(q_dir)
         # print(q_files)
@@ -64,12 +65,10 @@ class NewDataset(ImageDataset):
                 gallery.append([g_dir + file, int(filename.split('_')[1]), filename.split('_')[0]])
         # print(query)
 
-
         super(NewDataset, self).__init__(train, query, gallery, **kwargs)
 
 #   Register dataset
 torchreid.data.register_image_dataset('Test_dataset', NewDataset)
-
 
 #    Load data manager
 
@@ -90,10 +89,10 @@ model = torchreid.models.build_model(
     name='resnet50',
     num_classes=751,
     loss='softmax',
-    pretrained=True
+    pretrained=True, use_gpu=False
 )
 
-model = model.cuda()
+model = model  # .cuda()
 
 optimizer = torchreid.optim.build_optimizer(
     model,
@@ -114,13 +113,15 @@ engine = torchreid.engine.ImageSoftmaxEngine(
     model,
     optimizer=optimizer,
     scheduler=scheduler,
-    label_smooth=True
+    label_smooth=True,
+    use_gpu=False
 )
 
 #    Run training and test
 
-#model.load_weights('log/resnet50/model.pth.tar-60')
-torchreid.utils.load_pretrained_weights(model, 'log/resnet50/model.pth.tar-60')
+# model.load_weights('log/resnet50/model.pth.tar-60')
+torchreid.utils.load_pretrained_weights(model,
+                                        'log/resnet50/resnet50_msmt17_combineall_256x128_amsgrad_ep150_stp60_lr0.0015_b64_fb10_softmax_labelsmooth_flip_jitter.pth')
 
 engine.run(
     save_dir='reid-data/',
@@ -128,6 +129,6 @@ engine.run(
     eval_freq=10,
     print_freq=10,
     test_only=True,
-    visrank = True,
-    visrank_topk = 5
+    visrank=True,
+    visrank_topk=5
 )

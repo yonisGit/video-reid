@@ -33,15 +33,16 @@ def compute_distance_matrix(input1, input2, metric='euclidean'):
     )
     assert input1.size(1) == input2.size(1)
 
-    if metric == 'euclidean':
-        distmat = euclidean_squared_distance(input1, input2)
-    elif metric == 'cosine':
-        distmat = cosine_distance(input1, input2)
-    else:
-        raise ValueError(
-            'Unknown distance metric: {}. '
-            'Please choose either "euclidean" or "cosine"'.format(metric)
-        )
+    distmat = cosine_distance(input1, input2) # todo: everything that is commented below need to be
+    # if metric == 'euclidean':
+    #     distmat = euclidean_squared_distance(input1, input2)
+    # elif metric == 'cosine':
+    #     distmat = cosine_distance(input1, input2)
+    # else:
+    #     raise ValueError(
+    #         'Unknown distance metric: {}. '
+    #         'Please choose either "euclidean" or "cosine"'.format(metric)
+    #     )
 
     return distmat
 
@@ -59,6 +60,8 @@ def euclidean_squared_distance(input1, input2):
     m, n = input1.size(0), input2.size(0)
     distmat = torch.pow(input1, 2).sum(dim=1, keepdim=True).expand(m, n) + \
               torch.pow(input2, 2).sum(dim=1, keepdim=True).expand(n, m).t()
+    print(input1.shape)
+    print(input2.t().shape)
     distmat.addmm_(1, -2, input1, input2.t())
     return distmat
 
